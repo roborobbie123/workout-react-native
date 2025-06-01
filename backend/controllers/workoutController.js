@@ -6,7 +6,7 @@ const User = require("../models/user");
 const createWorkout = async (req, res, next) => {
   const { date, exercises, user } = req.body;
 
-  // Checks if there is an existing user 
+  // Checks if there is an existing user
   let existingUser;
   try {
     existingUser = await User.findById(user);
@@ -16,7 +16,7 @@ const createWorkout = async (req, res, next) => {
   }
 
   if (!existingUser) {
-    return res.status(404).json({ message: "User not found."})
+    return res.status(404).json({ message: "User not found." });
   }
 
   // Attempts to create and save a workout
@@ -29,14 +29,13 @@ const createWorkout = async (req, res, next) => {
 
     await newWorkout.save();
 
-    await User.findByIdAndUpdate(user, {
-      $push: { workouts: newWorkout._id },
-    });
+    existingUser.workouts.push(newWorkout._id);
+    await existingUser.save();
 
     res.status(201).json(newWorkout);
   } catch (err) {
     console.log(err);
-    res.status(500).json({ message: "error has occurred" });
+    res.status(500).json({ message: "Error creating workout" });
   }
 };
 

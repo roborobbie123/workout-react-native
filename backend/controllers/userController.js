@@ -22,6 +22,27 @@ const signUp = async (req, res, next) => {
   }
 };
 
+const logIn = async (req, res, next) => {
+  const { email, password } = req.body;
+
+  // Checks to see if email exists in database
+  let existingUser;
+  try {
+    existingUser = await User.findOne({ email });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "User error occurred" });
+  }
+
+  if (!existingUser) {
+    return res.status(400).json({ message: "Invalid email address" });
+  }
+
+  res.status(200).json({ message: 'Signed In'});
+
+  // Password verification required
+};
+
 const getUsers = async (req, res, next) => {
   let users;
 
@@ -36,4 +57,5 @@ const getUsers = async (req, res, next) => {
 };
 
 exports.signUp = signUp;
+exports.logIn = logIn;
 exports.getUsers = getUsers;
