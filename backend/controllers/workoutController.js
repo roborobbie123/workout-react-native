@@ -1,12 +1,25 @@
 const mongoose = require("mongoose");
 
 const Workout = require("../models/workout");
-const Exercise = require("../models/exercise");
 const User = require("../models/user");
 
 const createWorkout = async (req, res, next) => {
   const { date, exercises, user } = req.body;
 
+  // Checks if there is an existing user 
+  let existingUser;
+  try {
+    existingUser = await User.findById(user);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "User error has occurred." });
+  }
+
+  if (!existingUser) {
+    return res.status(404).json({ message: "User not found."})
+  }
+
+  // Attempts to create and save a workout
   try {
     const newWorkout = new Workout({
       date,
@@ -23,7 +36,7 @@ const createWorkout = async (req, res, next) => {
     res.status(201).json(newWorkout);
   } catch (err) {
     console.log(err);
-    res.status(500).json({ message: "Workout creation failed" });
+    res.status(500).json({ message: "error has occurred" });
   }
 };
 
