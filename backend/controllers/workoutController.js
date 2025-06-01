@@ -1,15 +1,36 @@
+const mongoose = require("mongoose");
 
-
-const url = 'mongodb+srv://roborobbie123:aqxx4DXVUEql641Z@cluster0.ijuaufj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
+const Workout = require("../models/workout");
+const Exercise = require("../models/exercise");
+const User = require("../models/user");
 
 const createWorkout = async (req, res, next) => {
+  const { date, exercises, user } = req.body;
 
-}
+  try {
+    const newWorkout = new Workout({
+      date,
+      exercises,
+      user,
+    });
 
-const editWorkout = async (req, res, next) => {
+    await newWorkout.save();
 
-}
+    await User.findByIdAndUpdate(user, {
+      $push: { workouts: newWorkout._id },
+    });
 
-const getWorkouts = async (req, res, next) => {
+    res.status(201).json(newWorkout);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Workout creation failed" });
+  }
+};
 
-}
+const editWorkout = async (req, res, next) => {};
+
+const deleteWorkout = async (req, res, next) => {};
+
+const getWorkouts = async (req, res, next) => {};
+
+exports.createWorkout = createWorkout;
