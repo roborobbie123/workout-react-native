@@ -1,9 +1,8 @@
 const mongoose = require("mongoose");
 
 const User = require("../models/user");
-const Workout = require("../models/workout");
-const { sign } = require("jsonwebtoken");
 
+// SIGNUP
 const signUp = async (req, res, next) => {
   const { email, password } = req.body;
 
@@ -22,6 +21,7 @@ const signUp = async (req, res, next) => {
   }
 };
 
+// LOGIN
 const logIn = async (req, res, next) => {
   const { email, password } = req.body;
 
@@ -38,11 +38,12 @@ const logIn = async (req, res, next) => {
     return res.status(400).json({ message: "Invalid email address" });
   }
 
-  res.status(200).json({ message: 'Signed In'});
+  res.status(200).json({ message: "Signed In" });
 
   // Password verification required
 };
 
+// GET ALL USERS
 const getUsers = async (req, res, next) => {
   let users;
 

@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const Workout = require("../models/workout");
 const User = require("../models/user");
 
+// CREATE AND SAVE NEW WORKOUT
 const createWorkout = async (req, res, next) => {
   const { date, exercises, user } = req.body;
 
