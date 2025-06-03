@@ -1,83 +1,86 @@
 import React from "react";
-import { Text, View, StyleSheet, Pressable } from "react-native";
-import { TextInput } from "react-native";
+import {
+  Text,
+  View,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import Button from "../components/Button";
+import SetInput from "../components/SetInput";
+import SetList from "../components/SetList";
 
-export default function newWorkout({ setSet, set }) {
+export default function newWorkout({
+  setSet,
+  set,
+  workout,
+  setWorkout,
+  setNewWorkoutScreen,
+  workingExercises,
+  setWorkingExercises,
+}) {
+  const handleAddSet = () => {
+    if (set.exercise && set.weight && set.reps) {
+      setWorkout((prev) => [...prev, set]);
+      setSet({ exercise: "", weight: "", reps: "" });
+      setWorkingExercises((prev) => {
+        if (prev.includes(set.exercise)) {
+          return prev;
+        }
+        [set.exercise, ...prev];
+      });
+
+      Keyboard.dismiss();
+    }
+  };
+
+  const handleSaveWorkout = () => {
+    setSet({ exercise: "", weight: "", reps: "" });
+    setWorkout([]);
+    setNewWorkoutScreen(false);
+  };
+
   return (
-    <GestureHandlerRootView>
-      <View>
-        <View style={styles.set}>
-          <View style={styles.setInput}>
-            <TextInput
-              style={styles.inputText}
-              placeholder="Exercise"
-              placeholderTextColor="#888"
-              value={set?.exercise}
-              onChangeText={(text) => setSet({ ...set, exercise: text })}
-            />
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+        <View>
+          <View>
+            <View style={styles.set}>
+              <SetInput
+                placeholder="Exercise"
+                value={set?.exercise}
+                onChange={(text) => setSet({ ...set, exercise: text })}
+                workingExercises={workingExercises}
+              />
+              <SetInput
+                placeholder="Weight"
+                value={set?.weight}
+                onChange={(text) => setSet({ ...set, weight: text })}
+                type="number-pad"
+              />
+              <SetInput
+                placeholder="Reps"
+                value={set?.reps}
+                onChange={(text) => setSet({ ...set, reps: text })}
+                type="number-pad"
+              />
+              <Button text="Add set" onPress={handleAddSet} />
+            </View>
           </View>
-          <View style={styles.setInput}>
-            <TextInput
-              style={styles.inputText}
-              keyboardType="number-pad"
-              placeholder="Weight"
-              placeholderTextColor="#888"
-              value={set?.weight}
-              onChangeText={(text) => setSet({ ...set, weight: text })}
-            />
-          </View>
-          <View style={styles.setInput}>
-            <TextInput
-              style={styles.inputText}
-              keyboardType="number-pad"
-              placeholder="Reps"
-              placeholderTextColor="#888"
-              value={set?.reps}
-              onChangeText={(text) => setSet({ ...set, reps: text })}
-            />
-          </View>
-        </View>
-      </View>
+          <SetList workout={workout} />
 
-      <View style={styles.button}>
-        <Pressable onPress={() => setNewWorkoutScreen(false)}>
-          <Text style={styles.buttonText}>Save Workout</Text>
-        </Pressable>
-      </View>
+          <Button text="Save Workout" onPress={handleSaveWorkout} />
+        </View>
+      </TouchableWithoutFeedback>
     </GestureHandlerRootView>
   );
 }
 
 const styles = StyleSheet.create({
-  button: {
-    display: "flex",
-    alignContent: "center",
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 3,
-    borderWidth: 1,
-    borderRadius: 5,
-    width: 150,
-    height: 40,
-    borderColor: "#1E90FF",
-    marginTop: 20,
-  },
-  buttonText: {
-    color: "#1E90FF",
-  },
   set: {
     display: "flex",
-    borderWidth: 1,
     padding: 5,
-  },
-  setInput: {
-    borderWidth: 1,
-    padding: 5,
-    borderRadius: 2,
-    marginBottom: 2,
-  },
-  inputText: {
-    fontSize: 25,
+    width: 300,
   },
 });

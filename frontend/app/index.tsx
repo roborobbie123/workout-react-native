@@ -1,8 +1,6 @@
 import React from "react";
 import { useState } from "react";
 import { Text, View, StyleSheet, Pressable } from "react-native";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { TextInput } from "react-native";
 
 import NewWorkout from "../pages/NewWorkout.jsx";
 
@@ -14,6 +12,7 @@ export default function Index() {
     weight: "",
     reps: "",
   });
+  const [workingExercises, setWorkingExercises] = useState([]);
 
   return (
     <View style={styles.root}>
@@ -29,7 +28,17 @@ export default function Index() {
           </View>
         </View>
       )}
-      {newWorkoutScreen && <NewWorkout setSet={setSet} set={set}/>}
+      {newWorkoutScreen && (
+        <NewWorkout
+          setSet={setSet}
+          set={set}
+          workout={workout}
+          setWorkout={setWorkout}
+          setNewWorkoutScreen={setNewWorkoutScreen}
+          workingExercises={workingExercises}
+          setWorkingExercises={setWorkingExercises}
+        />
+      )}
     </View>
   );
 }
@@ -39,6 +48,8 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
     alignItems: "center",
+    width: '100%',
+    borderWidth: 1
   },
   titleContainer: {
     alignItems: "center",
