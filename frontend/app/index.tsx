@@ -11,6 +11,7 @@ export default function Index() {
     exercise: "",
     weight: "",
     reps: "",
+    notes: "",
   });
   const [workingExercises, setWorkingExercises] = useState([]);
 
@@ -48,8 +49,8 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
     alignItems: "center",
-    width: '100%',
-    borderWidth: 1
+    width: "100%",
+    borderWidth: 1,
   },
   titleContainer: {
     alignItems: "center",

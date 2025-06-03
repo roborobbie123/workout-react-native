@@ -8,19 +8,22 @@ import {
   StyleSheet,
 } from "react-native";
 
+
 export default function SetInput({
   placeholder,
   value,
   onChange,
   type,
   workingExercises = [],
+  unit,
+  setUnit,
 }) {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const isExerciseInput = placeholder.toLowerCase() === "exercise";
+  const isWeightInput = placeholder.toLowerCase() === "weight";
 
   const filteredSuggestions = workingExercises.filter(
-    (ex) =>
-      ex.toLowerCase().includes(value.toLowerCase()) && value.length > 0
+    (ex) => ex.toLowerCase().includes(value.toLowerCase()) && value.length > 0
   );
 
   const handleSelect = (exercise) => {
@@ -48,6 +51,7 @@ export default function SetInput({
             if (isExerciseInput && value.length > 0) setShowSuggestions(true);
           }}
         />
+        
       </View>
 
       {isExerciseInput && showSuggestions && filteredSuggestions.length > 0 && (
@@ -72,14 +76,17 @@ export default function SetInput({
 
 const styles = StyleSheet.create({
   setInput: {
+    flexDirection: "row",
+    alignItems: "center",
     borderWidth: 1,
     borderColor: "#ccc",
     borderRadius: 8,
     paddingHorizontal: 12,
-    paddingVertical: 10,
     backgroundColor: "#fff",
+    padding: 5,
   },
   inputText: {
+    flex: 1,
     fontSize: 18,
     color: "#333",
   },
