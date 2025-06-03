@@ -81,7 +81,7 @@ export default function newWorkout({
               <Button text="Add set" onPress={handleAddSet} />
             </View>
           </View>
-          <SetList workout={workout} setWorkout={setWorkout} />
+          <SetList workout={workout} setWorkout={setWorkout} workingExercises={workingExercises}/>
         </View>
         
       </TouchableWithoutFeedback>

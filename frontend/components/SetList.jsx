@@ -1,18 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
 import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 
 import { FlatList } from "react-native-gesture-handler";
 
 import Icon from "react-native-vector-icons/MaterialIcons";
+import EditModal from "../components/EditModal.jsx";
 
-export default function SetList({ workout, setWorkout }) {
+export default function SetList({ workout, setWorkout, workingExercises }) {
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [currentSet, setCurrentSet] = useState(null);
+  const [editIndex, setEditIndex] = useState(null);
+
   const handleDeleteSet = (targetIndex) => {
     setWorkout((prev) => prev.filter((_, i) => i !== targetIndex));
   };
 
+  const openEditModal = (item, index) => {
+    setCurrentSet(item);
+    setEditIndex(index);
+    setIsModalVisible(true);
+  };
+
+  const handleSaveUpdatedSet = (updatedSet) => {
+    const updatedWorkout = [...workout];
+    updatedWorkout[editIndex] = updatedSet;
+    setWorkout(updatedWorkout);
+    setIsModalVisible(false);
+  };
+
   return (
     <View style={styles.setList}>
-      {/* Header Row */}
       <View style={styles.tableRow}>
         <Text style={[styles.tableCell, styles.headerCell]}>Exercise</Text>
         <Text style={[styles.tableCell, styles.headerCell]}>Weight</Text>
@@ -20,9 +37,9 @@ export default function SetList({ workout, setWorkout }) {
         <Text style={[styles.tableCell, styles.headerCell]}>Edit</Text>
       </View>
 
-      {/* FlatList Rows */}
       <FlatList
         data={workout}
+        extraData={workout}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item, index }) => (
           <View style={styles.tableRow}>
@@ -30,7 +47,7 @@ export default function SetList({ workout, setWorkout }) {
             <Text style={styles.tableCell}>{item.weight}</Text>
             <Text style={styles.tableCell}>{item.reps}</Text>
             <View style={styles.iconBox}>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => openEditModal(item, index)}>
                 <Icon name="edit" size={24} color="black" />
               </TouchableOpacity>
               <TouchableOpacity onPress={() => handleDeleteSet(index)}>
@@ -39,6 +56,13 @@ export default function SetList({ workout, setWorkout }) {
             </View>
           </View>
         )}
+      />
+      <EditModal
+        visible={isModalVisible}
+        onClose={() => setIsModalVisible(false)}
+        setData={currentSet}
+        workingExercises={workingExercises}
+        onSave={handleSaveUpdatedSet}
       />
     </View>
   );
@@ -53,7 +77,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     marginVertical: 20,
     width: 350,
-    height: 200,
+    height: 300,
   },
   tableRow: {
     flexDirection: "row",
