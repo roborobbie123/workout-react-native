@@ -28,7 +28,7 @@ export default function newWorkout({
         if (prev.includes(set.exercise)) {
           return prev;
         }
-        [set.exercise, ...prev];
+        return [set.exercise, ...prev];
       });
 
       Keyboard.dismiss();

@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import {
   View,
-  StyleSheet,
   TextInput,
   FlatList,
   Pressable,
   Text,
+  StyleSheet,
 } from "react-native";
 
 export default function SetInput({
@@ -18,14 +18,13 @@ export default function SetInput({
   const [showSuggestions, setShowSuggestions] = useState(false);
   const isExerciseInput = placeholder.toLowerCase() === "exercise";
 
-  // Filter suggestions based on input text (case-insensitive)
   const filteredSuggestions = workingExercises.filter(
     (ex) =>
       ex.toLowerCase().includes(value.toLowerCase()) && value.length > 0
   );
 
   const handleSelect = (exercise) => {
-    onChange(exercise);
+    onChange(exercise); // updates the parent input value
     setShowSuggestions(false);
   };
 
@@ -39,10 +38,12 @@ export default function SetInput({
           value={value}
           keyboardType={type}
           onChangeText={(text) => {
-            onChange(text);
+            onChange(text); // update live input
             if (isExerciseInput) setShowSuggestions(true);
           }}
-          onBlur={() => setShowSuggestions(false)} // hide suggestions when input loses focus
+          onBlur={() => {
+            setTimeout(() => setShowSuggestions(false), 100); // delay so FlatList tap can register
+          }}
           onFocus={() => {
             if (isExerciseInput && value.length > 0) setShowSuggestions(true);
           }}
@@ -54,10 +55,11 @@ export default function SetInput({
           style={styles.suggestionsList}
           data={filteredSuggestions}
           keyExtractor={(item, index) => item + index}
+          keyboardShouldPersistTaps="handled"
           renderItem={({ item }) => (
             <Pressable
-              style={styles.suggestionItem}
               onPress={() => handleSelect(item)}
+              style={styles.suggestionItem}
             >
               <Text style={styles.suggestionText}>{item}</Text>
             </Pressable>
@@ -72,33 +74,22 @@ const styles = StyleSheet.create({
   setInput: {
     borderWidth: 1,
     borderColor: "#ccc",
+    borderRadius: 8,
     paddingHorizontal: 12,
     paddingVertical: 10,
-    borderRadius: 8,
     backgroundColor: "#fff",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 3,
-    elevation: 2,
   },
   inputText: {
     fontSize: 18,
     color: "#333",
   },
   suggestionsList: {
-    maxHeight: 120,
-    backgroundColor: "#fff",
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderTopWidth: 0,
+    backgroundColor: "#f9f9f9",
+    maxHeight: 150,
     borderRadius: 8,
-    marginTop: -8,
-    elevation: 3,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
+    borderColor: "#ddd",
+    borderWidth: 1,
+    marginTop: 4,
   },
   suggestionItem: {
     padding: 10,
