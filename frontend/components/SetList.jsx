@@ -30,11 +30,18 @@ export default function SetList({ workout, setWorkout, workingExercises }) {
 
   return (
     <View style={styles.setList}>
-      <View style={styles.tableRow}>
-        <Text style={[styles.tableCell, styles.headerCell]}>Exercise</Text>
-        <Text style={[styles.tableCell, styles.headerCell]}>Weight</Text>
-        <Text style={[styles.tableCell, styles.headerCell]}>Reps</Text>
-        <Text style={[styles.tableCell, styles.headerCell]}>Edit</Text>
+      <View style={styles.headerRow}>
+        {["Exercise", "Weight", "Reps", "Edit"].map((title, i, arr) => (
+          <Text
+            key={title}
+            style={[
+              styles.headerCell,
+              i === arr.length - 1 && { borderRightWidth: 0 }, // no border on last cell
+            ]}
+          >
+            {title}
+          </Text>
+        ))}
       </View>
 
       <FlatList
@@ -77,7 +84,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     marginVertical: 20,
     width: 350,
-    height: 300,
+    height: 275,
   },
   tableRow: {
     flexDirection: "row",
@@ -86,6 +93,13 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 10,
     backgroundColor: "#fff",
+    alignItems: "center",
+  },
+  headerRow: {
+    flexDirection: "row",
+    backgroundColor: "#1E90FF",
+    paddingVertical: 12,
+    // Remove horizontal padding here so header fills fully
     alignItems: "center",
   },
   tableCell: {
@@ -99,19 +113,15 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 16,
     color: "#fff",
-    backgroundColor: "#1E90FF",
     textAlign: "center",
-    paddingVertical: 10,
-    paddingHorizontal: 3,
+    paddingVertical: 12,
+    // Remove border radius and shadow for seamless row
+    borderRadius: 0,
+    shadowOpacity: 0,
+    elevation: 0,
+    // Add vertical borders except for last cell, see note below
     borderRightWidth: 1,
-    borderColor: "#fff",
-    shadowColor: "#000",
-    shadowOffset: { width: 1, height: 1 },
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
-    elevation: 3, // For Android shadow
-    borderRadius: 5,
-    overflow: "hidden",
+    borderRightColor: "rgba(255, 255, 255, 0.4)",
   },
   iconBox: {
     flex: 1,

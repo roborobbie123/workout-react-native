@@ -35,7 +35,7 @@ export const trainer = {
 export const clients = [
   {
     id: 2,
-    name: "Jane Client",
+    name: "Trey Lance",
     email: "jane.client@example.com",
     role: "client",
     workouts: {

@@ -6,11 +6,11 @@ const _layout = () => {
     <Stack>
       <Stack.Screen
         name="index"
-        options={{ title: "Clients", headerShown: false }}
+        options={{ title: "Client Details", headerShown: false }}
       />
       <Stack.Screen
-        name="[clientId]"
-        options={{ title: "Client Details", headerShown: false }}
+        name="workouts"
+        options={{ title: "Workouts", headerShown: false }}
       />
     </Stack>
   );

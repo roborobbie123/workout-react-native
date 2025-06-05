@@ -1,14 +1,17 @@
 import React from "react";
 import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 
-export default function Button({ text, onPress }) {
+export default function Button({ leftIcon, text, onPress }) {
   return (
     <TouchableOpacity
       style={styles.button}
       onPress={onPress}
       activeOpacity={0.8}
     >
-      <Text style={styles.buttonText}>{text}</Text>
+      <View style={styles.content}>
+        {leftIcon && <View style={styles.icon}>{leftIcon}</View>}
+        <Text style={styles.buttonText}>{text}</Text>
+      </View>
     </TouchableOpacity>
   );
 }
@@ -16,22 +19,31 @@ export default function Button({ text, onPress }) {
 const styles = StyleSheet.create({
   button: {
     backgroundColor: "#1E90FF",
+    borderRadius: 16,
     paddingVertical: 14,
     paddingHorizontal: 20,
-    borderRadius: 12,
-    width: "80%", // 80% of screen width
+    width: "85%",
     alignSelf: "center",
-    alignItems: "center",
+    marginVertical: 10,
+    elevation: 4,
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.25,
     shadowRadius: 4,
-    elevation: 3, // Adds shadow on Android
-    marginVertical: 12,
+  },
+  content: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  icon: {
+    marginRight: 10,
   },
   buttonText: {
     color: "#fff",
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: "600",
+    textAlign: "center",
   },
 });
+
