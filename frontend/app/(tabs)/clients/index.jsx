@@ -37,37 +37,64 @@ export default function ClientList() {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <View style={styles.root}>
-        
-
-        <View style={styles.searchContainer}>
-          <Ionicons name="search" size={20} color="#888" style={styles.searchIcon} />
-          <TextInput
-            style={styles.searchInput}
-            placeholder="Search clients"
-            value={searchText}
-            onChangeText={setSearchText}
-            placeholderTextColor="#888"
-          />
+      <View style={styles.container}>
+        {/* Banner */}
+        <View style={styles.banner}>
+          <Text style={styles.bannerText}>Clients</Text>
         </View>
 
-        <ClientsList clients={filteredClients} onClientPress={onPress} />
+        {/* Main Content */}
+        <View style={styles.content}>
+          <View style={styles.searchContainer}>
+            <Ionicons
+              name="search"
+              size={20}
+              color="#888"
+              style={styles.searchIcon}
+            />
+            <TextInput
+              style={styles.searchInput}
+              placeholder="Search clients"
+              value={searchText}
+              onChangeText={setSearchText}
+              placeholderTextColor="#888"
+            />
+          </View>
+
+          <ClientsList clients={filteredClients} onClientPress={onPress} />
+        </View>
       </View>
     </TouchableWithoutFeedback>
   );
 }
 
 const styles = StyleSheet.create({
-  root: {
+  container: {
     flex: 1,
-    padding: 16,
-    alignItems: "center",
-    marginTop: 75,
+    backgroundColor: "#f5f8fa",
   },
-  title: {
-    fontSize: 24,
+  banner: {
+    backgroundColor: "#1E90FF", // DodgerBlue
+    paddingTop: 50,
+    paddingBottom: 20,
+    justifyContent: "center",
+    alignItems: "center",
+    elevation: 3, // shadow on Android
+    shadowColor: "#000", // shadow on iOS
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    
+  },
+  bannerText: {
+    fontSize: 28,
+    color: "#fff",
     fontWeight: "bold",
-    marginBottom: 12,
+  },
+  content: {
+    flex: 1,
+    paddingHorizontal: 16,
+    paddingTop: 16,
   },
   searchContainer: {
     flexDirection: "row",

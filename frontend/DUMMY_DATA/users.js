@@ -30,6 +30,25 @@ export const trainer = {
       email: "lilly.client@example.com",
     },
   ],
+  workouts: {
+    total: 132,
+    page: 1,
+    limit: 2,
+    results: [
+      {
+        id: 101,
+        date: "2025-06-01",
+        summary: "Upper body strength",
+        setCount: 2,
+      },
+      {
+        id: 103,
+        date: "2025-06-04",
+        summary: "Full body circuit",
+        setCount: 2,
+      },
+    ],
+  },
 };
 
 export const clients = [

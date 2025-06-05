@@ -1,58 +1,55 @@
+import { View, Text, StyleSheet } from "react-native";
 import React from "react";
-import { Text, View, StyleSheet } from "react-native";
 
-export default function Index() {
+const Index = () => {
   return (
-    <View>
-      <View style={styles.titleContainer}>
-        <Text style={styles.titleText}>RoboTrain</Text>
+    <View style={styles.container}>
+      <View style={styles.banner}>
+        <Text style={styles.bannerText}>Home</Text>
+      </View>
+      <View style={styles.content}>
+        <Text style={styles.placeholderText}>
+          An app for personal trainers
+        </Text>
       </View>
     </View>
   );
-}
+};
+
+export default Index;
 
 const styles = StyleSheet.create({
-  root: {
+  container: {
     flex: 1,
-    flexDirection: "column",
-    alignItems: "center",
-    width: "100%",
-    marginTop: 75,
+    backgroundColor: "#f5f8fa",
   },
-  titleContainer: {
-    alignItems: "center",
-    marginVertical: 50,
-  },
-  titleText: {
-    fontSize: 40,
-    padding: 5,
-    color: "#1E90FF",
-  },
-  button: {
-    display: "flex",
-    alignContent: "center",
+  banner: {
+    backgroundColor: "#1E90FF", // DodgerBlue
+    paddingTop: 50,
+    paddingBottom: 20,
     justifyContent: "center",
     alignItems: "center",
-    padding: 3,
-    borderWidth: 1,
-    borderRadius: 5,
-    width: 150,
-    height: 40,
-    borderColor: "#1E90FF",
-    marginTop: 20,
+    elevation: 3, // shadow on Android
+    shadowColor: "#000", // shadow on iOS
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
   },
-  buttonText: {
-    color: "#1E90FF",
+  bannerText: {
+    fontSize: 28,
+    color: "#fff",
+    fontWeight: "bold",
   },
-  set: {
-    display: "flex",
-    borderWidth: 1,
-    padding: 5,
+  content: {
+    flex: 1,
+    padding: 20,
+    justifyContent: "center",
+    alignItems: "center",
   },
-  setInput: {
-    borderWidth: 1,
-    padding: 3,
-    borderRadius: 2,
-    marginBottom: 2,
+  placeholderText: {
+    fontSize: 18,
+    color: "#999",
+    fontStyle: "italic",
+    textAlign: "center",
   },
 });
