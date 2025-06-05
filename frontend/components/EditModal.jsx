@@ -163,8 +163,8 @@ const styles = StyleSheet.create({
     padding: 20,
     width: "85%",
     maxHeight: "80%",
-    position: 'absolute',
-    top: 175
+    position: "absolute",
+    top: 175,
   },
   title: {
     fontSize: 18,

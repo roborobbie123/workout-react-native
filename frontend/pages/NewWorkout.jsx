@@ -59,7 +59,7 @@ export default function newWorkout({
                 workingExercises={workingExercises}
               />
               <SetInput
-                placeholder="Weight"
+                placeholder="Weight (lbs)"
                 value={set?.weight}
                 onChange={(text) => setSet({ ...set, weight: text })}
                 type="number-pad"
@@ -76,14 +76,19 @@ export default function newWorkout({
                 placeholder="Notes"
                 value={set?.notes}
                 onChange={(text) => setSet({ ...set, notes: text })}
+                multiline={true}
+                style={{ paddingBottom: 4 }}
               />
 
               <Button text="Add set" onPress={handleAddSet} />
             </View>
           </View>
-          <SetList workout={workout} setWorkout={setWorkout} workingExercises={workingExercises}/>
+          <SetList
+            workout={workout}
+            setWorkout={setWorkout}
+            workingExercises={workingExercises}
+          />
         </View>
-        
       </TouchableWithoutFeedback>
     </GestureHandlerRootView>
   );
@@ -92,8 +97,7 @@ export default function newWorkout({
 const styles = StyleSheet.create({
   container: {
     marginTop: 25,
-    display: 'flex',
-
+    display: "flex",
   },
   set: {
     display: "flex",
@@ -102,8 +106,8 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     marginTop: 25,
-    display: 'flex',
-    alignContent: 'center',
-    alignItems: 'center',
+    display: "flex",
+    alignContent: "center",
+    alignItems: "center",
   },
 });

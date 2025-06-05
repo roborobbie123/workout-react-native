@@ -110,6 +110,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 2,
     elevation: 3, // For Android shadow
+    borderRadius: 5,
+    overflow: "hidden",
   },
   iconBox: {
     flex: 1,

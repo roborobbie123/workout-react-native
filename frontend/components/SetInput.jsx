@@ -8,15 +8,16 @@ import {
   StyleSheet,
 } from "react-native";
 
-
 export default function SetInput({
   placeholder,
   value,
   onChange,
   type,
   workingExercises = [],
+  multiline,
   unit,
   setUnit,
+  style,
 }) {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const isExerciseInput = placeholder.toLowerCase() === "exercise";
@@ -35,11 +36,12 @@ export default function SetInput({
     <View style={{ marginBottom: 12 }}>
       <View style={styles.setInput}>
         <TextInput
-          style={styles.inputText}
+          style={[styles.inputText, style]}
           placeholder={placeholder}
           placeholderTextColor="#888"
           value={value}
           keyboardType={type}
+          multiline={multiline}
           onChangeText={(text) => {
             onChange(text); // update live input
             if (isExerciseInput) setShowSuggestions(true);
@@ -51,7 +53,6 @@ export default function SetInput({
             if (isExerciseInput && value.length > 0) setShowSuggestions(true);
           }}
         />
-        
       </View>
 
       {isExerciseInput && showSuggestions && filteredSuggestions.length > 0 && (
@@ -83,7 +84,8 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: 12,
     backgroundColor: "#fff",
-    padding: 5,
+    paddingVertical: 5,
+    textAlign: "center",
   },
   inputText: {
     flex: 1,

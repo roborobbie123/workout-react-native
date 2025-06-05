@@ -1,11 +1,25 @@
 import React from "react";
-import { useState } from "react";
-import { Text, View, StyleSheet, Pressable } from "react-native";
+import { useState, useEffect } from "react";
+import { Text, View, StyleSheet } from "react-native";
 
 import NewWorkout from "../pages/NewWorkout.jsx";
+import WorkoutHistory from "../pages/WorkoutHistory.jsx";
+import LiftLog from "../pages/LiftLog.jsx";
+
+import Button from "@/components/Button.jsx";
+
+import { workouts } from "../DUMMY_DATA/workouts.js";
+import { trainer, clients } from "../DUMMY_DATA/users.js";
 
 export default function Index() {
+  const [activeUser, setActiveUser] = useState(trainer);
+  const [clientList, setClientList] = useState([]);
+
   const [newWorkoutScreen, setNewWorkoutScreen] = useState(false);
+  const [workoutHistoryScreen, setWorkoutHistoryScreen] = useState(false);
+  const [liftLog, setLiftLog] = useState(false);
+
+  // states for new workout
   const [workout, setWorkout] = useState([]);
   const [set, setSet] = useState({
     exercise: "",
@@ -15,18 +29,31 @@ export default function Index() {
   });
   const [workingExercises, setWorkingExercises] = useState([]);
 
+  // set client list based on active user
+  useEffect(() => {
+    if (activeUser && activeUser.role === "trainer") {
+      setClientList(clients);
+    } else {
+      setClientList([]);
+    }
+  }, [activeUser]);
+
   return (
     <View style={styles.root}>
-      {!newWorkoutScreen && (
+      {!newWorkoutScreen && !workoutHistoryScreen && !liftLog && (
         <View>
           <View style={styles.titleContainer}>
-            <Text style={styles.titleText}>PRism</Text>
+            <Text style={styles.titleText}>RoboTrain</Text>
           </View>
-          <View style={styles.button}>
-            <Pressable onPress={() => setNewWorkoutScreen(true)}>
-              <Text style={styles.buttonText}>Start New Workout</Text>
-            </Pressable>
-          </View>
+          <Button
+            text="New Workout"
+            onPress={() => setNewWorkoutScreen(true)}
+          />
+          <Button
+            text="Your Workouts"
+            onPress={() => setWorkoutHistoryScreen(true)}
+          />
+          <Button text="Lift Log" onPress={() => setLiftLog(true)} />
         </View>
       )}
       {newWorkoutScreen && (
@@ -40,6 +67,13 @@ export default function Index() {
           setWorkingExercises={setWorkingExercises}
         />
       )}
+      {workoutHistoryScreen && (
+        <WorkoutHistory
+          setWorkoutHistoryScreen={setWorkoutHistoryScreen}
+          workouts={workouts}
+        />
+      )}
+      {liftLog && <LiftLog setLiftLog={setLiftLog} workouts={workouts} />}
     </View>
   );
 }
@@ -50,11 +84,10 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignItems: "center",
     width: "100%",
-    borderWidth: 1,
   },
   titleContainer: {
     alignItems: "center",
-    borderWidth: 1,
+    marginVertical: 50,
   },
   titleText: {
     fontSize: 40,
