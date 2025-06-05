@@ -25,6 +25,7 @@ export default function WorkoutHistoryScreen({}) {
   return (
     <View style={styles.container}>
       <FlatList
+      style={styles.list}
         data={clientWorkouts}
         keyExtractor={(_, index) => index.toString()}
         renderItem={({ item }) => <WorkoutExerciseList workout={item} />}
@@ -35,6 +36,8 @@ export default function WorkoutHistoryScreen({}) {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 100,
   },
+  list: {
+    paddingVertical: 100
+  }
 });

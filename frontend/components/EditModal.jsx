@@ -131,9 +131,6 @@ export default function EditSetModal({
           />
 
           <View style={styles.buttonRow}>
-            <TouchableOpacity onPress={handleSave} style={styles.saveButton}>
-              <Text style={{ color: "white", fontWeight: "bold" }}>Save</Text>
-            </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
                 setShowSuggestions(false);
@@ -141,7 +138,10 @@ export default function EditSetModal({
               }}
               style={styles.cancelButton}
             >
-              <Text style={{ color: "#555" }}>Cancel</Text>
+              <Text style={{ color: "#555", fontWeight: 'bold' }}>Cancel</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={handleSave} style={styles.saveButton}>
+              <Text style={{ color: "white", fontWeight: "bold" }}>Save</Text>
             </TouchableOpacity>
           </View>
         </View>

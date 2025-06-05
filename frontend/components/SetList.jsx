@@ -5,14 +5,27 @@ import { FlatList } from "react-native-gesture-handler";
 
 import Icon from "react-native-vector-icons/MaterialIcons";
 import EditModal from "../components/EditModal.jsx";
+import ConfirmationModal from "./ConfirmationModel.jsx";
 
 export default function SetList({ workout, setWorkout, workingExercises }) {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [currentSet, setCurrentSet] = useState(null);
   const [editIndex, setEditIndex] = useState(null);
 
-  const handleDeleteSet = (targetIndex) => {
-    setWorkout((prev) => prev.filter((_, i) => i !== targetIndex));
+  const [isConfirmVisible, setIsConfirmVisible] = useState(false);
+  const [setToDeleteIndex, setSetToDeleteIndex] = useState(null);
+
+  const confirmDeleteSet = (index) => {
+    setSetToDeleteIndex(index);
+    setIsConfirmVisible(true);
+  };
+
+  const handleConfirmDelete = () => {
+    if (setToDeleteIndex !== null) {
+      setWorkout((prev) => prev.filter((_, i) => i !== setToDeleteIndex));
+      setSetToDeleteIndex(null);
+      setIsConfirmVisible(false);
+    }
   };
 
   const openEditModal = (item, index) => {
@@ -44,32 +57,46 @@ export default function SetList({ workout, setWorkout, workingExercises }) {
         ))}
       </View>
 
-      <FlatList
-        data={workout}
-        extraData={workout}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item, index }) => (
-          <View style={styles.tableRow}>
-            <Text style={styles.tableCell}>{item.exercise}</Text>
-            <Text style={styles.tableCell}>{item.weight}</Text>
-            <Text style={styles.tableCell}>{item.reps}</Text>
-            <View style={styles.iconBox}>
-              <TouchableOpacity onPress={() => openEditModal(item, index)}>
-                <Icon name="edit" size={24} color="black" />
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => handleDeleteSet(index)}>
-                <Icon name="delete" size={24} color="red" />
-              </TouchableOpacity>
+      {workout.length === 0 ? (
+        <View style={styles.emptyMessageRow}>
+          <Text style={styles.emptyMessageText}>
+            No workout data available.
+          </Text>
+        </View>
+      ) : (
+        <FlatList
+          data={workout}
+          extraData={workout}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item, index }) => (
+            <View style={styles.tableRow}>
+              <Text style={styles.tableCell}>{item.exercise}</Text>
+              <Text style={styles.tableCell}>{item.weight}</Text>
+              <Text style={styles.tableCell}>{item.reps}</Text>
+              <View style={styles.iconBox}>
+                <TouchableOpacity onPress={() => openEditModal(item, index)}>
+                  <Icon name="edit" size={24} color="black" />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => confirmDeleteSet(index)}>
+                  <Icon name="delete" size={24} color="red" />
+                </TouchableOpacity>
+              </View>
             </View>
-          </View>
-        )}
-      />
+          )}
+        />
+      )}
       <EditModal
         visible={isModalVisible}
         onClose={() => setIsModalVisible(false)}
         setData={currentSet}
         workingExercises={workingExercises}
         onSave={handleSaveUpdatedSet}
+      />
+      <ConfirmationModal
+        visible={isConfirmVisible}
+        message="Are you sure you want to delete this set?"
+        onConfirm={handleConfirmDelete}
+        onCancel={() => setIsConfirmVisible(false)}
       />
     </View>
   );
@@ -129,5 +156,15 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     gap: 10,
+  },
+  emptyMessageRow: {
+    flexDirection: "row",
+    paddingVertical: 20,
+    justifyContent: "center",
+  },
+  emptyMessageText: {
+    fontSize: 16,
+    color: "#999",
+    fontStyle: "italic",
   },
 });

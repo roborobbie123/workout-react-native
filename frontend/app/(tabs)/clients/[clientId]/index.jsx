@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { ScrollView, View, Text, StyleSheet } from "react-native";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import { MaterialIcons, FontAwesome5, Ionicons } from "@expo/vector-icons";
 
@@ -13,9 +13,11 @@ export default function ClientDetails() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{selectedClient.name}</Text>
-      <Text style={styles.email}>{selectedClient.email}</Text>
-      <View style={styles.buttons}>
+      <View style={styles.titleContainer}>
+        <Text style={styles.title}>{selectedClient.name}</Text>
+        <Text style={styles.email}>{selectedClient.email}</Text>
+      </View>
+      <ScrollView style={styles.buttons}>
         <Button
           leftIcon={
             <MaterialIcons name="fitness-center" size={24} color="white" />
@@ -28,7 +30,9 @@ export default function ClientDetails() {
         <Button
           leftIcon={<FontAwesome5 name="history" size={20} color="white" />}
           text="Workout History"
-          onPress={() => router.push(`/clients/${clientId}/workouts/workout-history`)}
+          onPress={() =>
+            router.push(`/clients/${clientId}/workouts/workout-history`)
+          }
         />
         <Button
           leftIcon={<Ionicons name="barbell" size={24} color="white" />}
@@ -43,7 +47,7 @@ export default function ClientDetails() {
             console.log("Message button pressed");
           }}
         />
-      </View>
+      </ScrollView>
     </View>
   );
 }
@@ -53,7 +57,9 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
     marginTop: 75,
-    alignItems: "center",
+  },
+  titleContainer: {
+    alignItems: 'center',
   },
   title: {
     fontSize: 32,
@@ -65,6 +71,7 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   buttons: {
-    marginTop: 50,
+    flex: 1,
+    paddingTop: 50,
   },
 });
