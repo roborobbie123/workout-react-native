@@ -6,6 +6,9 @@ import {
   TouchableOpacity,
 } from "react-native";
 import React from "react";
+import { trainer } from "../../../DUMMY_DATA/users";
+import { clients } from "../../../DUMMY_DATA/users";
+
 import { useRouter } from "expo-router";
 
 import { useTrainer } from "../../../context/TrainerContext";
@@ -13,6 +16,14 @@ import { useTrainer } from "../../../context/TrainerContext";
 const Profile = () => {
   const { activeUser, setActiveUser } = useTrainer();
   const router = useRouter();
+
+  const switchAccount = () => {
+    if (activeUser.role === "trainer") {
+      setActiveUser(clients[0]);
+    } else {
+      setActiveUser(trainer);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -31,7 +42,14 @@ const Profile = () => {
           <View style={styles.userInfo}>
             <Text style={styles.userName}>{activeUser.name}</Text>
             <Text style={styles.userEmail}>{activeUser.email}</Text>
-            <Text style={styles.userRole}>{activeUser.role.toUpperCase()}</Text>
+            <Text
+              style={[
+                styles.userRole,
+                { color: activeUser.role === "trainer" ? "#1E90FF" : "#0c921a" },
+              ]}
+            >
+              {activeUser.role.toUpperCase()}
+            </Text>
           </View>
         </View>
 
@@ -39,7 +57,12 @@ const Profile = () => {
         <View style={styles.settingsSection}>
           <Text style={styles.sectionTitle}>Settings</Text>
 
-          <TouchableOpacity style={styles.settingItem} onPress={() => {router.push(`/profile/edit-profile`)}}>
+          <TouchableOpacity
+            style={styles.settingItem}
+            onPress={() => {
+              router.push(`/profile/edit-profile`);
+            }}
+          >
             <Text style={styles.settingText}>Edit Profile</Text>
           </TouchableOpacity>
 
@@ -47,7 +70,10 @@ const Profile = () => {
             <Text style={styles.settingText}>Notifications</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={[styles.settingItem, styles.logoutItem]}>
+          <TouchableOpacity
+            style={[styles.settingItem, styles.logoutItem]}
+            onPress={() => switchAccount()}
+          >
             <Text style={[styles.settingText, styles.logoutText]}>Log Out</Text>
           </TouchableOpacity>
         </View>
@@ -57,7 +83,6 @@ const Profile = () => {
 };
 
 export default Profile;
-
 
 const styles = StyleSheet.create({
   container: {
@@ -120,7 +145,6 @@ const styles = StyleSheet.create({
     marginTop: 6,
     fontSize: 14,
     fontWeight: "600",
-    color: "#1E90FF",
     backgroundColor: "#e6f0fc",
     paddingHorizontal: 10,
     paddingVertical: 4,

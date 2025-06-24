@@ -23,7 +23,6 @@ export default function newWorkout() {
     set,
     workout,
     setWorkout,
-    setNewWorkoutScreen,
     workingExercises,
     setWorkingExercises,
   } = useTrainer();
