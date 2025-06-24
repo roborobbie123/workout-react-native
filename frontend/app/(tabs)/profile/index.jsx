@@ -34,7 +34,15 @@ const Profile = () => {
       <ScrollView contentContainerStyle={styles.content}>
         {/* Profile Info */}
         <View style={styles.profileInfo}>
-          <View style={styles.avatarPlaceholder}>
+          <View
+            style={[
+              styles.avatarPlaceholder,
+              {
+                backgroundColor:
+                  activeUser.role === "trainer" ? "#1E90FF" : "#0c921a",
+              },
+            ]}
+          >
             <Text style={styles.avatarText}>
               {activeUser.name.charAt(0).toUpperCase()}
             </Text>
@@ -45,7 +53,9 @@ const Profile = () => {
             <Text
               style={[
                 styles.userRole,
-                { color: activeUser.role === "trainer" ? "#1E90FF" : "#0c921a" },
+                {
+                  color: activeUser.role === "trainer" ? "#1E90FF" : "#0c921a",
+                },
               ]}
             >
               {activeUser.role.toUpperCase()}
@@ -118,7 +128,6 @@ const styles = StyleSheet.create({
     width: 90,
     height: 90,
     borderRadius: 45,
-    backgroundColor: "#1E90FF",
     justifyContent: "center",
     alignItems: "center",
     marginRight: 20,

@@ -11,6 +11,10 @@ export default function WorkoutHistoryScreen({}) {
   const { selectedClient } = useTrainer();
   const [clientWorkouts, setClientWorkouts] = useState([]);
 
+  const sortedWorkouts = clientWorkouts.sort(
+    (a, b) => new Date(b.date) - new Date(a.date)
+  );
+
   useEffect(() => {
     const clientWorkoutIds = selectedClient.workouts.results.map(
       (workout) => workout.id
@@ -25,8 +29,8 @@ export default function WorkoutHistoryScreen({}) {
   return (
     <View style={styles.container}>
       <FlatList
-      style={styles.list}
-        data={clientWorkouts}
+        style={styles.list}
+        data={sortedWorkouts}
         keyExtractor={(_, index) => index.toString()}
         renderItem={({ item }) => <WorkoutExerciseList workout={item} />}
       />
@@ -35,9 +39,8 @@ export default function WorkoutHistoryScreen({}) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-  },
+  container: {},
   list: {
-    paddingVertical: 100
-  }
+    paddingVertical: 100,
+  },
 });
