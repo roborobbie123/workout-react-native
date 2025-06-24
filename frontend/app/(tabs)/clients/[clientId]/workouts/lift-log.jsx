@@ -5,15 +5,21 @@ import {
   TouchableOpacity,
   FlatList,
   StyleSheet,
+  TextInput,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
 
-import { useTrainer } from "../../../../../context/TrainerContext.js";
+import { Ionicons } from "@expo/vector-icons";
 
+import { useTrainer } from "../../../../../context/TrainerContext.js";
 import { workouts } from "../../../../../DUMMY_DATA/workouts.js";
 
 export default function ExerciseHistoryScreen() {
   const { selectedClient } = useTrainer();
   const [clientWorkouts, setClientWorkouts] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [expandedExercises, setExpandedExercises] = useState({});
 
   useEffect(() => {
     const clientWorkoutIds = selectedClient.workouts.results.map(
@@ -23,10 +29,7 @@ export default function ExerciseHistoryScreen() {
       .map((id) => workouts[id])
       .filter(Boolean);
     setClientWorkouts(filteredWorkouts);
-    console.log(clientWorkoutIds);
   }, [selectedClient]);
-
-  const [expandedExercises, setExpandedExercises] = useState({});
 
   const exerciseMap = useMemo(() => {
     const map = {};
@@ -45,10 +48,14 @@ export default function ExerciseHistoryScreen() {
   }, [clientWorkouts]);
 
   const exercises = useMemo(() => {
-    return Object.keys(exerciseMap).sort((a, b) =>
+    const allExercises = Object.keys(exerciseMap).sort((a, b) =>
       a.toLowerCase().localeCompare(b.toLowerCase())
     );
-  }, [exerciseMap]);
+    if (!searchQuery.trim()) return allExercises;
+    return allExercises.filter((ex) =>
+      ex.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }, [exerciseMap, searchQuery]);
 
   const toggleExercise = (exercise) => {
     setExpandedExercises((prev) => ({
@@ -88,15 +95,34 @@ export default function ExerciseHistoryScreen() {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.pageTitle}>Lift Log</Text>
-      <FlatList
-        data={exercises}
-        renderItem={renderExerciseItem}
-        keyExtractor={(item) => item}
-        contentContainerStyle={styles.listContent}
-      />
-    </View>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <View style={styles.container}>
+        <Text style={styles.pageTitle}>Lift Log</Text>
+
+        <View style={styles.searchContainer}>
+          <Ionicons
+            name="search"
+            size={20}
+            color="#888"
+            style={styles.searchIcon}
+          />
+          <TextInput
+            style={styles.searchInput}
+            placeholder="Search exercises"
+            placeholderTextColor="#888"
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+          />
+        </View>
+
+        <FlatList
+          data={exercises}
+          renderItem={renderExerciseItem}
+          keyExtractor={(item) => item}
+          contentContainerStyle={styles.listContent}
+        />
+      </View>
+    </TouchableWithoutFeedback>
   );
 }
 
@@ -105,6 +131,17 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#f0f4f8",
     marginTop: 75,
+  },
+  searchContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    marginBottom: 12,
+    backgroundColor: "#fff",
+    marginHorizontal: 10,
   },
   pageTitle: {
     fontSize: 28,
@@ -161,5 +198,14 @@ const styles = StyleSheet.create({
     color: "#666",
     fontStyle: "italic",
     marginTop: 2,
+  },
+  searchIcon: {
+    marginRight: 8,
+  },
+  searchInput: {
+    flex: 1,
+    height: 40,
+    fontSize: 16,
+    color: "#000",
   },
 });
